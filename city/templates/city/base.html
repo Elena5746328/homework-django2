@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ title }} — Зеленоградск</title>
+    <style>
+        nav a { margin-right: 12px; text-decoration: none; color: #222; }
+        nav a:hover { color: #007bff; }
+        hr { border: 0; border-top: 1px solid #ccc; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'home' %}">Главная</a> |
+        <a href="{% url 'news' %}">Новости</a> |
+        <a href="{% url 'management' %}">Руководство</a> |
+        <a href="{% url 'facts' %}">Факты</a> |
+        <a href="{% url 'contacts' %}">Контакты</a> |
+        <a href="{% url 'history' %}">История</a>
+    </nav>
+
+    <hr>
+
+    <h1>{{ title }}</h1>
+
+    {% block content %}{% endblock %}
+</body>
+</html>
