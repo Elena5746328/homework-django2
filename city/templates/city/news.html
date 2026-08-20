@@ -1,10 +1,22 @@
 {% extends "city/base.html" %}
 
 {% block content %}
-    <p><strong>Свежие новости Зеленоградска:</strong></p>
-    <ul>
-        <li>На променаде открылась новая смотровая площадка с видом на море.</li>
-        <li>В городе проходит фестиваль «Кошачья неделя» — в программе выставки, лекции и мастер-классы.</li>
-        <li>Запущена дополнительная автобусная линия до пляжа в восточной части города.</li>
-    </ul>
+<p><strong>Свежие новости Зеленоградска:</strong></p>
+
+<ul>
+    {% for article in articles %}
+        {% if article.is_published %}
+            <li>
+                <strong><a href="{% url 'article_detail' article.pk %}">{{ article.title }}</a></strong>
+                <br>
+                {{ article.content|truncatewords:30 }}
+                <small>— {{ article.author.username }}, {{ article.created_at|date:"d.m.Y" }}</small>
+            </li>
+        {% endif %}
+    {% empty %}
+        <li>Нет опубликованных новостей.</li>
+    {% endfor %}
+</ul>
 {% endblock %}
+
+

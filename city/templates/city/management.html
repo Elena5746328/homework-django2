@@ -1,7 +1,90 @@
-{% extends "city/base.html" %}
+{% extends 'city/base.html' %}
 
 {% block content %}
-    <p><strong>Администрация муниципального образования «Зеленоградский муниципальный округ»:</strong></p>
-    <p>Глава округа: Сергей Заболотный (данные обновляются на официальном сайте).</p>
-    <p>Основные направления работы: благоустройство, развитие туризма, поддержка малого бизнеса, сохранение исторического облика города.</p>
+<h1>Панель управления (Админ)</h1>
+
+<div class="admin-panel">
+    <h3>Настройки внешнего вида</h3>
+    <form method="post">
+        {% csrf_token %}
+        <input type="hidden" name="action" value="update_styles">
+        <label>Цвет фона: <input type="color" name="bg_color" value="{{ settings.background_color }}"></label>
+        <label>Цвет текста: <input type="color" name="font_color" value="{{ settings.font_color }}"></label>
+        <label>Размер шрифта (px): <input type="number" name="font_size" value="{{ settings.font_size_px }}"></label>
+        <button type="submit">Применить</button>
+    </form>
+</div>
+
+<div class="admin-panel">
+    <h3>Статистика</h3>
+    <h4>Топ статей по просмотрам</h4>
+    <ul>
+        {% for article in top_views %}
+            <li>{{ article.title }} - {{ article.views }} просмотров</li>
+        {% endfor %}
+    </ul>
+    
+    <h4>Топ статей по сохранениям</h4>
+    <ul>
+        {% for article in top_saves %}
+            <li>{{ article.title }} - {{ article.saves }} сохранений</li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="admin-panel">
+    <h3>Управление пользователями и баны</h3>
+    <h4>Список пользователей</h4>
+    <ul>
+        {% for user in users %}
+            <li>
+                {{ user.username }} 
+                {% if user.ban_info.is_active %}
+                    (ЗАБАНЕН до {{ user.ban_info.banned_until }})
+                {% endif %}
+
+                <form method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="ban_user">
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    <select name="duration">
+                        <option value="day">На день</option>
+                        <option value="week">На неделю</option>
+                        <option value="month">На месяц</option>
+                        <option value="forever">Навсегда</option>
+                    </select>
+                    <input type="text" name="reason" placeholder="Причина">
+                    <button type="submit">Забанить</button>
+                </form>
+
+                {% if user.ban_info.is_active %}
+                <form method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="unban_user">
+                    <input type="hidden" name="user_id" value="{{ user.id }}">
+                    <button type="submit" style="color:red;">РАЗБАНИТЬ</button>
+                </form>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+<div class="admin-panel">
+    <h3>Управление статьями</h3>
+    <ul>
+        {% for article in top_views %}
+            <li>
+                {{ article.title }} (Автор: {{ article.author }})
+                <form method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="action" value="delete_article">
+                    <input type="hidden" name="article_id" value="{{ article.id }}">
+                    <button type="submit" style="color:red;">Удалить статью</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}
+

@@ -1,0 +1,21 @@
+{% extends 'city/base.html' %}
+
+{% block content %}
+  <h2>{{ news.title }}</h2>
+  <p>{{ news.text }}</p>
+
+  {% if perms.city.change_news %}
+    <a href="{% url 'news_edit' news.id %}">Редактировать</a>
+  {% endif %}
+
+  {% if perms.city.delete_news %}
+    <form action="{% url 'news_delete' news.id %}" method="post" style="display:inline;">
+      {% csrf_token %}
+      <button type="submit">Удалить новость</button>
+    </form>
+  {% endif %}
+
+  {% if perms.city.add_news %}
+    <a href="{% url 'news_add' %}">Добавить новость</a>
+  {% endif %}
+{% endblock %}

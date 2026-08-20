@@ -1,7 +1,15 @@
-{% extends "city/base.html" %}
+{% extends 'city/base.html' %}
 
 {% block content %}
-    <p><strong>Известные люди, связанные с Зеленоградском (Кранцем):</strong></p>
-    <p>В разные годы Кранц посещали деятели культуры, врачи и общественные деятели, чьи имена остались в курортной истории города. Сегодня Зеленоградск чтит память местных краеведов и архитекторов, которые помогали сохранять исторический облик города.</p>
-    <p>Если вы знаете интересные истории о жителях Зеленоградска — расскажите в краеведческом музее: там собирают воспоминания и фотографии горожан.</p>
+<h1>Значимые люди Зеленоградска</h1>
+
+<div class="people-list" style="max-width: 600px;">
+    {% for person in people %}
+        <div style="margin-bottom: 15px; border-bottom: 1px solid var(--text-color); padding-bottom: 10px;">
+            <strong style="color: var(--text-color);">{{ person.name }}</strong>
+            <p style="margin: 5px 0 0 0;">{{ person.role }} ({{ person.years }})</p>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}
+
