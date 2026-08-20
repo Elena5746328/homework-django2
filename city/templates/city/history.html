@@ -1,7 +1,15 @@
-{% extends "city/base.html" %}
+
+{% extends 'city/base.html' %}
 
 {% block content %}
-    <p><strong>История Зеленоградска (Кранца):</strong></p>
-    <p>Ещё в XIX веке Кранц стал популярным морским курортом: сюда приезжали ради морского воздуха, ванн и прогулок по берегу. В начале XX века город активно развивался как место отдыха и лечения.</p>
-    <p>После 1945 года город вошёл в состав СССР, в 1946 году получил название Зеленоградск. Сохранились фрагменты старой застройки, элементы курортной архитектуры и планировочные решения, характерные для балтийских курортов прошлого.</p>
+<h1>История Зеленоградска</h1>
+
+<div class="history-list" style="max-width: 600px;">
+    {% for item in history_items %}
+        <div style="margin-bottom: 15px; border-bottom: 1px solid var(--text-color); padding-bottom: 10px;">
+            <strong style="color: var(--text-color);">{{ item.year }}</strong>
+            <p style="margin: 5px 0 0 0;">{{ item.event }}</p>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'city/base.html' %}
+
+{% block content %}
+<h2>Вход в панель управления</h2>
+
+<form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    
+    <div style="margin-bottom: 15px;">
+        <label for="id_username">Логин:</label>
+        <input type="text" name="username" id="id_username" required style="padding: 8px; width: 250px;">
+    </div>
+    
+    <div style="margin-bottom: 15px;">
+        <label for="id_password">Пароль:</label>
+        <input type="password" name="password" id="id_password" required style="padding: 8px; width: 250px;">
+    </div>
+
+    {% if form.errors %}
+        <p style="color: red;">Неверный логин или пароль.</p>
+    {% endif %}
+
+    <button type="submit" style="padding: 10px 20px; background-color: #333; color: white; border: none; cursor: pointer;">Войти</button>
+</form>
+
+<p><a href="{% url 'home' %}">Вернуться на главную</a></p>
+{% endblock %}
+

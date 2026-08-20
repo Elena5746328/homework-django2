@@ -1,7 +1,16 @@
-{% extends "city/base.html" %}
+{% extends 'city/base.html' %}
 
 {% block content %}
-    <p><strong>Исторические фотографии Зеленоградска (Кранца):</strong></p>
-    <p>На старых снимках можно увидеть променад и купальни Кранца начала XX века, уютные улочки с немецкой застройкой, отдыхающих на пляже и первые курортные павильоны.</p>
-    <p>Часть коллекции хранится в Зеленоградском городском краеведческом музее. Также многие фотографии доступны в цифровых архивах и на тематических ресурсах о довоенной Восточной Пруссии.</p>
+<h1>История Зеленоградска в фотографиях</h1>
+
+<div class="photos-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+    {% for photo in photos %}
+        <div style="text-align: center;">
+            <img src="{{ photo.src }}" alt="{{ photo.caption }}" style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+            <p style="margin-top: 10px; font-weight: bold;">{{ photo.caption }}</p>
+            <p style="color: #666; font-size: 0.9em;">{{ photo.year }}</p>
+        </div>
+    {% endfor %}
+</div>
 {% endblock %}
+

@@ -1,27 +1,130 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
-    <title>{{ title }} — Зеленоградск</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Новостной портал Зеленоградска{% endblock %}</title>
+
     <style>
-        nav a { margin-right: 12px; text-decoration: none; color: #222; }
-        nav a:hover { color: #007bff; }
-        hr { border: 0; border-top: 1px solid #ccc; margin: 20px 0; }
+        :root {
+            --bg-color: {{ settings.background_color|default:'#ffffff' }};
+            --text-color: {{ settings.font_color|default:'#333333' }};
+            --font-size: {{ settings.font_size_px|default:16 }}px;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-size: var(--font-size);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 15px;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1;
+            width: 100%;
+        }
+        
+        footer {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            text-align: center;
+            padding: 1rem;
+            margin-top: auto;
+            flex-shrink: 0;
+        }
+
+        .admin-panel {
+            border: 2px solid var(--text-color);
+            padding: 20px;
+            margin-top: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+        }
+
+        button, input[type="submit"] {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+            border: none;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+
+        button:hover, input[type="submit"]:hover {
+            opacity: 0.9;
+        }
+
+        input[type="color"], input[type="number"], select {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid var(--text-color);
+        }
     </style>
 </head>
 <body>
-    <nav>
-        <a href="{% url 'home' %}">Главная</a> |
-        <a href="{% url 'news' %}">Новости</a> |
-        <a href="{% url 'management' %}">Руководство</a> |
-        <a href="{% url 'facts' %}">Факты</a> |
-        <a href="{% url 'contacts' %}">Контакты</a> |
-        <a href="{% url 'history' %}">История</a>
-    </nav>
+    <header>
+        <h1>🏙️ Зеленоградск | Новости города</h1>
+        <nav>
+            <a href="{% url 'home' %}">Главная</a>
+            <a href="{% url 'news' %}">Все новости</a>
+            
+            {% if user.is_staff or user.is_superuser %}
+                <a href="{% url 'management' %}">Панель управления</a>
+            {% endif %}
+            
+            {% if user.is_authenticated %}
+                <span style="margin-left: 20px; font-size: 0.9em;">Привет, {{ user.username }}</span>
+            {% else %}
+                <a href="{% url 'login' %}" style="margin-left: 20px; font-size: 0.9em;">Войти</a>
+            {% endif %}
+        </nav>
+    </header>
 
-    <hr>
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
 
-    <h1>{{ title }}</h1>
-
-    {% block content %}{% endblock %}
+    <footer>
+        <p>&copy; 2024 Новостной портал Зеленоградска. Все права защищены.</p>
+    </footer>
 </body>
 </html>
+
+
+
